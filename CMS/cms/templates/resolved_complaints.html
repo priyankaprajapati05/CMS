@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Resolved Complaints</title>
+    {% load static %}
+    <style>
+        body {
+            background-image: url("{% static 'images/b4.png' %}");
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .back-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Resolved Complaints</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Employee ID</th>
+                <th>Division</th>
+                <th>Complaint Type</th>
+                <th>Device Type</th>
+                <th>Specific Device</th>
+                <th>Description</th>
+                <th>Resolution Notes</th>
+                <th>Resolved Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if resolved_complaints %}
+                {% for resolved_complaint in resolved_complaints %}
+                    <tr>
+                        <td>{{ resolved_complaint.complaint.id }}</td>
+                        <td>{{ resolved_complaint.complaint.user.first_name }}</td>
+                        <td>{{ resolved_complaint.complaint.user.username }}</td>
+                        <td>{{ resolved_complaint.complaint.user.profile.division }}</td>
+                        <td>{{ resolved_complaint.complaint.complaint_type }}</td>
+                        <td>{{ resolved_complaint.complaint.device_type }}</td>
+                        <td>{{ resolved_complaint.complaint.specific_device }}</td>
+                        <td>{{ resolved_complaint.complaint.description }}</td>
+                        <td>{{ resolved_complaint.resolution_notes }}</td>
+                        <td>{{ resolved_complaint.resolved_date }}</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="10" class="center">No resolved complaints found.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    <div class="center">
+        <a href="{% url 'admin_dashboard' %}" class="back-button">Back to Dashboard</a>
+    </div>
+</body>
+
+</html>

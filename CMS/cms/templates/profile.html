@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-NgTSc/vio4bQQ6CStZsuWkBvRmY2PnbX5ZTFgFroPQz8WbIQZJOLiQYXaU+adXU9z8V1Bc+QyPULt1EokdSyHg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            background-color: rgb(127, 206, 255);
+            font-family: Arial, sans-serif;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: rgb(163, 213, 244);
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 800px;
+        }
+        .logo {
+            margin-top: 50px;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+        .employee-id {
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            width: 100%;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            width: 100%;
+            position: relative;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        .readonly {
+            background-color: #e9ecef;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="sidebar">
+        <img src="{% static 'images/contacts_logo.png' %}" alt="Logo" class="logo">
+        <p class="employee-id">Employee ID: {{ user.username }}</p>
+        <div class="buttons">
+            <a href="{% url 'home' %}" class="button">Go to Home Page</a>
+            <a href="{% url 'logout' %}" class="button logout">Logout</a>
+        </div>
+    </div>
+    <div class="main-content">
+        {% if message %}
+        <div class="message">
+            <p>{{ message }}</p>
+        </div>
+        {% endif %}
+        <div class="container">
+            <h1>MY PROFILE</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" value="{{ user.first_name }}">
+                </div>
+                <div class="form-group">
+                    <label for="employee_id">Employee ID</label>
+                    <input type="text" id="employee_id" name="employee_id" value="{{ user.username }}" readonly class="readonly">
+                </div>
+                <div class="form-group">
+                    <label for="division">Division</label>
+                    <input type="text" id="division" name="division" value="{{ profile.division }}">
+                </div>
+                <div class="form-group">
+                    <label for="designation">Designation</label>
+                    <input type="text" id="designation" name="designation" placeholder="Enter your designation" value="{{ profile.designation }}">
+                </div>
+                <div class="form-group">
+                    <label for="phone_number">Phone Number</label>
+                    <input type="text" id="phone_number" name="phone_number" placeholder="Enter your phone number" value="{{ profile.phone_number }}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" value="{{ user.email }}">
+                </div>
+                <button type="submit">Save Profile</button>
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>

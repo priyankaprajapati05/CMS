@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    {% load static %}
+    <style>
+        body {
+            background-image: url("{% static 'images/b5.png' %}");
+            background-size: cover;
+            display: flex;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar {
+            width: 20%;
+            height: 2000px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 60px;
+            box-sizing: border-box;
+            border-right: 2px solid #000;
+        }
+
+        .main-content {
+            width: 75%;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 1400px;
+        }
+
+        h1 {
+            text-align: left;
+            margin-top: 1%;
+        }
+
+        .buttons a {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .buttons a:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .status-pending {
+            background-color: yellow;
+            color: black;
+        }
+
+        .status-resolved {
+            background-color: green;
+            color: white;
+        }
+
+        .status-not-resolved {
+            background-color: red;
+            color: white;
+        }
+
+        .delete-button {
+            background-color: red;
+            color: white;
+        }
+
+        select {
+            width: 100%;
+            padding: 5px;
+        }
+
+        button {
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h1>Admin Dashboard</h1>
+        <img src="{% static 'images/contacts_logo.png' %}" alt="Logo" style="width: 100%; height: auto;">
+        <div class="buttons">
+            <a href="{% url 'resolved_complaints' %}">Resolved Complaints</a>
+            <a href="{% url 'logout' %}">Admin Logout</a>
+        </div>
+    </div>
+    <div class="main-content">
+        <h1>Registered Complaints</h1>
+        <table>
+            <tr>
+                <th>S.NO.</th>
+                <th>Name</th>
+                <th>Employee ID</th>
+                <th>Division</th>
+                <th>Complaint Type</th>
+                <th>Device Type</th>
+                <th>Specific Device</th>
+                <th>Description</th>
+                <th>Register Date</th>
+                <th>Status</th>
+            </tr>
+            {% if complaints %}
+                {% for complaint in complaints %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ complaint.user.first_name }}</td>
+                    <td>{{ complaint.user.username }}</td>
+                    <td>{{ complaint.user.profile.division }}</td>
+                    <td>{{ complaint.complaint_type }}</td>
+                    <td>{{ complaint.device_type }}</td>
+                    <td>{{ complaint.specific_device }}</td>
+                    <td>{{ complaint.description }}</td>
+                    <td>{{ complaint.date_created }}</td>
+                    <td>
+                        <form method="post" action="{% url 'admin_update_status' complaint.pk %}">
+                            {% csrf_token %}
+                            <select name="status" class="status-{{ complaint.status|lower }}" onchange="this.form.submit()">
+                                <option value="Pending" {% if complaint.status == 'Pending' %}selected{% endif %} class="status-pending">Pending</option>
+                                <option value="Resolved" {% if complaint.status == 'Resolved' %}selected{% endif %} class="status-resolved">Resolved</option>
+                            </select>
+                            <input type="hidden" name="resolution_notes" value="Resolution notes here"> <!-- Adjust as necessary -->
+                        </form>
+                        
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="10" class="center">No complaints found.</td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Complaint</title>
+    {% load static %}
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-NgTSc/vio4bQQ6CStZsuWkBvRmY2PnbX5ZTFgFroPQz8WbIQZJOLiQYXaU+adXU9z8V1Bc+QyPULt1EokdSyHg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url("{% static 'images/dam.png' %}");
+            /* Background image */
+            background-size: cover;
+            /* Cover entire viewport */
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.9);
+            /* Semi-transparent white background */
+            text-decoration: #007bff;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 250px;
+            /* Adjust size as needed */
+            height: auto;
+            z-index: 100;
+            /* Ensure it appears above other content */
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            background-color: rgba(0, 255, 0, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .go-home-button {
+            justify-content: center;
+            /* Center content horizontally */
+            align-items: center;
+            /* Center content vertically */
+            margin: 0 auto;
+            margin-top: 10px;
+            background-color: #f0ad4e;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .go-home-button:hover {
+            background-color: #ec971f;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const deviceTypeSelect = document.getElementById("device_type");
+            const specificDeviceContainer = document.getElementById("specific_device_container");
+
+            const specificDeviceOptions = {
+                "Select": ["Select"],
+                "Peripheral Devices": ["Printer", "Scanner", "Monitor", "Keyboard", "Mouse", "Webcam", "Speaker", "Microphone"],
+                "Computing Devices": ["Desktop", "Laptop", "Server"],
+                "Networking Devices": ["Router", "Switch", "Hub", "Modem", "VPN Appliances", "Optical Fibre Transceivers", "Media Converters"],
+                "Storage Devices": ["HDD", "SSD", "Optical Disc"],
+                "Communication Devices": ["VoIP Phone", "Teleconferencing System", "Video Conferencing System", "Intercom System"],
+                "Security Devices": ["Security Camera", "Access Control System", "Biometric System"],
+                "Development and Testing Devices": ["Development Board", "Test Server", "Debugger", "Logic Analyzer"],
+                "Power Devices": ["UPS", "PDU", "Backup Generators", "Power Banks"],
+                "Data Collection and Monitoring Devices": ["Sensors", "Data Loggers", "Environmental Monitors", "Network Analyser"],
+                "Miscellaneous Devices": ["Projectors", "Smart Boards", "Document Cameras", "Media Players"],
+                "Specialized IT Equipment": ["Mainframes", "Blade Servers"]
+            };
+
+            deviceTypeSelect.addEventListener("change", function () {
+                const selectedDeviceType = this.value;
+                const specificDevices = specificDeviceOptions[selectedDeviceType];
+
+                if (specificDevices) {
+                    let options = '<label for="specific_device">Specific Device</label><select id="specific_device" name="specific_device" required>';
+                    specificDevices.forEach(function (device) {
+                        options += `<option value="${device}">${device}</option>`;
+                    });
+                    options += '</select>';
+                    specificDeviceContainer.innerHTML = options;
+                } else {
+                    specificDeviceContainer.innerHTML = '';
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <img src="{% static 'images/nhpc.png' %}" alt="NHPC Logo" class="logo">
+    <div class="container">
+        <h1>Create New Complaint</h1>
+        {% if success %}
+        <div id="successMessage" class="success-message show">
+            Your complaint is registered successfully.
+        </div>
+        {% endif %}
+        <form method="post" id="complaintForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="complaint_type">Complaint Type</label>
+                <select id="complaint_type" name="complaint_type" required>
+                    <option value="Hardware">Hardware complaint</option>
+                    <option value="Network">Network complaint</option>
+                    <option value="Software">Software complaint</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="device_type">Type of Device</label>
+                <select id="device_type" name="device_type" required>
+                    <option value="Peripheral Devices">Peripheral Devices</option>
+                    <option value="Computing Devices">Computing Devices</option>
+                    <option value="Networking Devices">Networking Devices</option>
+                    <option value="Storage Devices">Storage Devices</option>
+                    <option value="Communication Devices">Communication Devices</option>
+                    <option value="Security Devices">Security Devices</option>
+                    <option value="Development and Testing Devices">Development and Testing Devices</option>
+                    <option value="Power Devices">Power Devices</option>
+                    <option value="Data Collection and Monitoring Devices">Data Collection and Monitoring Devices
+                    </option>
+                    <option value="Miscellaneous Devices">Miscellaneous Devices</option>
+                    <option value="Specialized IT Equipment">Specialized IT Equipment</option>
+                </select>
+            </div>
+            <div class="form-group" id="specific_device_container"></div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+            <button type="submit">Register Your Complaint</button>
+            <br>
+            <br>
+            <br>
+            <a href="{% url 'home' %}" class="go-home-button">Go to Home Page</a>
+        </form>
+    </div>
+</body>
+
+</html>

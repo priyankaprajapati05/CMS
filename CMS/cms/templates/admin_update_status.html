@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Complaint Status</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <h1>Update Complaint Status</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="status">Status:</label>
+        <input type="text" id="status" name="status" value="{{ complaint.status }}" required>
+        
+        <label for="resolution_notes">Resolution Notes:</label>
+        <textarea id="resolution_notes" name="resolution_notes" rows="4" cols="50">{{ complaint.resolution_notes }}</textarea>
+        
+        <button type="submit">Update Status</button>
+    </form>
+    <br>
+    <a href="{% url 'admin_dashboard' %}">Back to Dashboard</a>
+</body>
+</html>

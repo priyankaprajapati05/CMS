@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head> 
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Home Page</title>
+    {% load static %}
+    <style>
+        body {
+            background-image: url("{% static 'images/b4.png' %}");
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: rgba(255, 255, 255, 0.8); /* Translucent white */
+            padding: 20px;
+            color: #000; /* Adjusted color for better contrast */
+            border-right: 1px solid #ddd; /* Optional: adds a border for better separation */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .sidebar a {
+            text-align: center;
+            color: #000; /* Adjusted color for better contrast */
+            text-decoration: none;
+            display: block;
+            padding: 15px;
+            margin: 5px 0;
+            border-radius: 10px;
+        }
+        .sidebar a:hover {
+            background-color: #acacac; /* Lighter background on hover */
+        }
+        .sidebar .btn-logout {
+            background-color: #5cdd29;
+            color: #000;
+            border: none;
+            padding: 15px;
+            margin: 100px 0;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+        }
+        .sidebar .btn-logout:hover {
+            background-color: #d4ff88;
+        }
+
+        .sidebar .logo{
+            margin-top: 45px;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 80px;
+            margin-top: 30px;
+        }
+        .header .right {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            color: #000000;
+            text-align: left;
+            background-color: #ffffff; /* White background */
+            padding: 20px;
+            border: 1px solid #ddd; /* Light border */
+            border-radius: 10px; /* Rounded corners */
+        }
+        .header .right p {
+            font-size: 20px; /* Adjust size as needed */
+            margin: 0;
+        }
+        .header .title {
+            margin-top: 0px;
+            margin-left: 10px;
+            flex-grow: 1;
+            color: #000000;
+            text-align: left;
+            border: 2px solid #000; /* Black border */
+            padding: 15px; /* Padding inside the border */
+            border-radius: 20px; /* Rounded corners for the border box */
+        }
+
+
+        .clickable-boxes {
+            margin: 20px 0;
+        }
+        .clickable-boxes .box {
+            background-color: rgba(255, 255, 255, 1); /* Translucent white */
+            color: #000; /* Adjusted color for better contrast */
+            padding: 80px; /* Adjusted padding for better box size */
+            margin: 10px;
+            text-align: center;
+            border-radius: 20px; /* Adjusted border radius */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: x-large; /* Larger font size */
+        }
+        .clickable-boxes .box:hover {
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly less translucent on hover */
+        }
+        .box-link {
+            text-decoration: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="{% static 'images/nhpc.png' %}" alt="NHPC Logo" class="logo">
+        <div>
+            <h2>User Dashboard</h2>
+            <hr>
+            <a href="{% url 'new_complaint' %}">New Complaint</a>
+            <a href="{% url 'complaint_status' %}">Complaint Status</a>
+            <a href="{% url 'profile' %}">My Profile</a>
+        </div>
+        <a href="{% url 'logout' %}" class="btn-logout">Logout</a>
+    </div>
+
+    <div class="content">
+        <div class="header">
+            <div class="title">
+                <h1>COMPLAINT MANAGEMENT SYSTEM</h1>
+            </div>
+            <div class="right">
+                <p>Date: {{ current_date }}</p>
+                <p>Name: {{ user.first_name }}</p>
+                <p>Employee ID: {{ user.username }}</p>
+            </div>
+        </div>
+
+        <div class="clickable-boxes">
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="{% url 'new_complaint' %}" class="box-link">
+                        <div class="box">ADD NEW COMPLAINTS</div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'complaint_status' %}" class="box-link">
+                        <div class="box">COMPLAINT STATUS</div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'profile' %}" class="box-link">
+                        <div class="box">SEE YOUR PROFILE</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
