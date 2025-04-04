@@ -1,0 +1,7 @@
+[build]
+  # This command installs the dependencies defined in requirements.txt
+  command = "pip install -r requirements.txt"
+
+[run]
+  # This command starts the Django development server
+  command = "python manage.py runserver 0.0.0.0:8000"
